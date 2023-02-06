@@ -32,20 +32,47 @@
       </li>
     </ul>
   </div>
+  <button @click="isOpen = true">Crear Todo</button>
+  <modal-component v-if="isOpen" @on:close="isOpen = false">
+    <template v-slot:header>
+      <h1>New Todo</h1>
+    </template>
+    <template v-slot:body>
+      <form
+        @submit.prevent="
+          createTodo({ title: todoForm.title, completed: todoForm.completed });
+          isOpen = false;
+        "
+      >
+        <label for="title">Title</label>
+        <input type="text" v-model="todoForm.title" />
+        <label for="completed">Completed</label>
+        <input type="checkbox" v-model="todoForm.completed" />
+        <button type="submit">Crear Todo</button>
+      </form>
+    </template>
+  </modal-component>
 </template>
 
 <script>
 import useTodo from "@/composables/useTodo";
+import ModalComponent from "@/components/ModalComponent.vue";
+import { ref } from "@vue/reactivity";
 
 export default {
+  components: { ModalComponent },
   name: "TodoVuex",
   setup() {
-    const { getBytab, pending, currentTab, toggleTodo } = useTodo();
+    const { getBytab, pending, currentTab, toggleTodo, todoForm, createTodo } =
+      useTodo();
     return {
       getBytab,
       pending,
       currentTab,
       toggleTodo,
+      todoForm,
+      createTodo,
+      isOpen: ref(false),
     };
   },
 };

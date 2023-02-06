@@ -13,6 +13,8 @@ const useTodo = () => {
     completed: computed(() => store.getters["completedTodo"]),
     // done: computed(() => store.state.todo.filter((t) => t.done)),
     getBytab: computed(() => store.getters["getTodoByTab"](currentTab.value)),
+    todoForm: ref({ title: "", completed: false }),
+    createTodo: (todo) => store.commit("createTodo", todo),
   };
 };
 

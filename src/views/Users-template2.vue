@@ -3,10 +3,12 @@
   <h2 v-else>Usuarios</h2>
   <h5 v-if="errorMessage">Error en carga</h5>
   <div v-if="users.length > 0">
-    <UserList :users="users" v-slot="{ user }">
-      <h5>{{ user.first_name }} {{ user.last_name }}</h5>
-      <span>{{ user.email }}</span>
-    </UserList>
+    <ul>
+      <li v-for="user in users" :key="user.id">
+        <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+        <h6>{{ user.email }}</h6>
+      </li>
+    </ul>
   </div>
   <button @click="prevPage">Atras</button>
   <span>{{ currentPage }}</span>
@@ -15,12 +17,8 @@
 
 <script>
 import useUsers from "@/composables/useUsers";
-import UserList from "@/components/UserList.vue";
 export default {
   name: "Users-component",
-  components: {
-    UserList,
-  },
   setup() {
     const { users, isLoading, errorMessage, currentPage, nextPage, prevPage } =
       useUsers();
@@ -41,12 +39,13 @@ h2 {
   text-align: center;
   width: 100%;
 }
+
 div {
   display: flex;
   justify-content: center;
   text-align: center;
-  flex-direction: column;
 }
+
 ul {
   width: 250px;
 }
